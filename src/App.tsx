@@ -50,8 +50,30 @@ function useDarkMode() {
   return [dark, setDark] as const;
 }
 
+function useActiveSection(sections: string[]) {
+  const [active, setActive] = useState(sections[0]);
+
+  useEffect(() => {
+    const observers = sections.map((id) => {
+      const el = document.getElementById(id);
+      if (!el) return null;
+      const observer = new IntersectionObserver(
+        ([entry]) => { if (entry.isIntersecting) setActive(id); },
+        { rootMargin: "-30% 0px -60% 0px" }
+      );
+      observer.observe(el);
+      return observer;
+    });
+    return () => observers.forEach((o) => o?.disconnect());
+  }, [sections]);
+
+  return active;
+}
+
 export default function App() {
   const [dark, setDark] = useDarkMode();
+  const sections = ["about", "builds", "experience", "connect"];
+  const activeSection = useActiveSection(sections);
 
   return (
     <div className="bg-background text-primary selection:bg-surface-container grid-paper min-h-screen font-sans">
@@ -62,15 +84,18 @@ export default function App() {
             Dan
           </span>
           <nav className="hidden md:flex items-center gap-8 font-newsreader text-base tracking-tight">
-            {["About", "Builds", "Experience", "Connect"].map((item) => (
-              <a
-                key={item}
-                href={`#${item.toLowerCase()}`}
-                className={`relative text-primary/60 hover:text-primary transition-colors duration-300 ${item === "About" ? "font-bold text-primary after:absolute after:left-0 after:-bottom-[17px] after:w-full after:h-[2px] after:bg-primary" : ""}`}
-              >
-                {item}
-              </a>
-            ))}
+            {["About", "Builds", "Experience", "Connect"].map((item) => {
+              const isActive = activeSection === item.toLowerCase();
+              return (
+                <a
+                  key={item}
+                  href={`#${item.toLowerCase()}`}
+                  className={`relative transition-colors duration-300 ${isActive ? "font-bold text-primary after:absolute after:left-0 after:-bottom-[17px] after:w-full after:h-[2px] after:bg-primary" : "text-primary/60 hover:text-primary"}`}
+                >
+                  {item}
+                </a>
+              );
+            })}
           </nav>
           <button
             onClick={() => setDark((d) => !d)}
