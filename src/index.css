@@ -1,0 +1,68 @@
+@import url('https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,200..800;1,6..72,200..800&family=Public+Sans:ital,wght@0,100..900;1,100..900&display=swap');
+@import "tailwindcss";
+
+@theme {
+  --font-sans: "Public Sans", ui-sans-serif, system-ui, sans-serif;
+  --font-newsreader: "Newsreader", serif;
+
+  /* Light mode tokens */
+  --color-primary: #181512;
+  --color-background: #fdf8f7;
+  --color-tertiary: #300600;
+  --color-on-surface-variant: #4d4540;
+  --color-outline-variant: #cfc4bd;
+  --color-surface-container: #f1edec;
+  --color-surface-card: #ffffff;
+}
+
+@layer base {
+  body {
+    @apply font-sans bg-background text-primary transition-colors duration-300;
+  }
+
+  /* Offset anchor scroll for fixed header (~65px tall) */
+  section[id] {
+    scroll-margin-top: 80px;
+  }
+
+  /* Dark mode overrides via .dark on <html> */
+  .dark {
+    --color-primary: #e8e4dc;
+    --color-background: #18191a;
+    --color-tertiary: #8A9A5B;
+    --color-secondary: #C17F59;
+    --color-accent-gold: #B5A642;
+    --color-neutral: #787771;
+    --color-on-surface-variant: #a89f97;
+    --color-outline-variant: #363430;
+    --color-surface-container: #222321;
+    --color-surface-card: #1f2020;
+  }
+}
+
+@layer utilities {
+  .grid-paper {
+    background-image:
+        linear-gradient(rgba(45, 41, 38, 0.03) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(45, 41, 38, 0.03) 1px, transparent 1px);
+    background-size: 8px 8px;
+  }
+
+  .dark .grid-paper {
+    background-image:
+        linear-gradient(rgba(138, 154, 91, 0.04) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(138, 154, 91, 0.04) 1px, transparent 1px);
+  }
+
+  .ink-rule {
+    @apply h-[1px] w-full bg-[#2D2926]/10;
+  }
+
+  .dark .ink-rule {
+    background-color: rgba(138, 154, 91, 0.15);
+  }
+
+  .notebook-margin {
+    @apply lg:absolute lg:right-[-224px] lg:w-[200px] w-full mt-2 lg:mt-0;
+  }
+}
