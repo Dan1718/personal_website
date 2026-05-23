@@ -13,6 +13,7 @@ import {
   Sun,
 } from "lucide-react";
 import { motion } from "motion/react";
+import { Analytics } from "@vercel/analytics/react";
 
 const fadeInUp = {
   initial: { opacity: 0, y: 20 },
@@ -430,6 +431,7 @@ export default function App() {
           </div>
         </div>
       </footer>
+      <Analytics />
     </div>
   );
 }
